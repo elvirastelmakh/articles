@@ -1,233 +1,178 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Basic Project Template</h1>
-    <br>
-</p>
-
-Yii 2 Basic Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-rapidly creating small projects.
-
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
-
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![build](https://github.com/yiisoft/yii2-app-basic/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-basic/actions?query=workflow%3Abuild)
-
-DIRECTORY STRUCTURE
--------------------
-
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
-
-
-
-REQUIREMENTS
-------------
-
-The minimum requirement by this project template that your Web server supports PHP 7.4.
-
-
-INSTALLATION
-------------
-
-### Install via Composer
-
-If you do not have [Composer](https://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-composer create-project --prefer-dist yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](https://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install with Docker
-
-Update your vendor packages
-
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
-
-    docker-compose run --rm php composer install    
-    
-Start the container
-
-    docker-compose up -d
-    
-You can then access the application through the following URL:
-
-    http://127.0.0.1:8000
-
-**NOTES:** 
-- Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
-- The default configuration uses a host-volume in your home directory `.docker-composer` for composer caches
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
-```
-
-**NOTES:**
-- Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
-
-
-TESTING
--------
-
-Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](https://codeception.com/).
-By default, there are 3 test suites:
-
-- `unit`
-- `functional`
-- `acceptance`
-
-Tests can be executed by running
-
-```
-vendor/bin/codecept run
-```
-
-The command above will execute unit and functional tests. Unit tests are testing the system components, while functional
-tests are for testing user interaction. Acceptance tests are disabled by default as they require additional setup since
-they perform testing in real browser. 
-
-
-### Running  acceptance tests
-
-To execute acceptance tests do the following:  
-
-1. Rename `tests/acceptance.suite.yml.example` to `tests/acceptance.suite.yml` to enable suite configuration
-
-2. Replace `codeception/base` package in `composer.json` with `codeception/codeception` to install full-featured
-   version of Codeception
-
-3. Update dependencies with Composer 
-
-    ```
-    composer update  
-    ```
-
-4. Download [Selenium Server](https://www.seleniumhq.org/download/) and launch it:
-
-    ```
-    java -jar ~/selenium-server-standalone-x.xx.x.jar
-    ```
-
-    In case of using Selenium Server 3.0 with Firefox browser since v48 or Google Chrome since v53 you must download [GeckoDriver](https://github.com/mozilla/geckodriver/releases) or [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch Selenium with it:
-
-    ```
-    # for Firefox
-    java -jar -Dwebdriver.gecko.driver=~/geckodriver ~/selenium-server-standalone-3.xx.x.jar
-    
-    # for Google Chrome
-    java -jar -Dwebdriver.chrome.driver=~/chromedriver ~/selenium-server-standalone-3.xx.x.jar
-    ``` 
-    
-    As an alternative way you can use already configured Docker container with older versions of Selenium and Firefox:
-    
-    ```
-    docker run --net=host selenium/standalone-firefox:2.53.0
-    ```
-
-5. (Optional) Create `yii2basic_test` database and update it by applying migrations if you have them.
-
-   ```
-   tests/bin/yii migrate
-   ```
-
-   The database configuration can be found at `config/test_db.php`.
-
-
-6. Start web server:
-
-    ```
-    tests/bin/yii serve
-    ```
-
-7. Now you can run all available tests
-
-   ```
-   # run all available tests
-   vendor/bin/codecept run
-
-   # run acceptance tests
-   vendor/bin/codecept run acceptance
-
-   # run only unit and functional tests
-   vendor/bin/codecept run unit,functional
-   ```
-
-### Code coverage support
-
-By default, code coverage is disabled in `codeception.yml` configuration file, you should uncomment needed rows to be able
-to collect code coverage. You can run your tests and collect coverage with the following command:
-
-```
-#collect coverage for all tests
-vendor/bin/codecept run --coverage --coverage-html --coverage-xml
-
-#collect coverage only for unit tests
-vendor/bin/codecept run unit --coverage --coverage-html --coverage-xml
-
-#collect coverage for unit and functional tests
-vendor/bin/codecept run functional,unit --coverage --coverage-html --coverage-xml
-```
-
-You can see code coverage output under the `tests/_output` directory.
+# Разворачивание проекта локально
+
+1. Склонировать репозиторий: git clone git@github.com:elvirastelmakh/articles.git
+2. Перейти в созданную директорию: `cd articles`
+3. Запустить проект: ddev start
+4. Зайти в web-контейнер: ddev ssh
+5. Установить composer: composer install
+6. Выполнить миграции: ./yii migrate
+   На данном этапе происходит также наполнение БД данными для тестирования этого проекта (для этого создан отдельный файл миграции).
+7. URL для просмотра в браузере (домашняя страничка не реализована, не предполагалась данным ТЗ): https://articles.ddev.site/
+
+## В проекте реализовано:
+1. База данных для хранения следующих сущностей:
+    1. Автор статьи:
+        1. ФИО
+        2. Год рождения
+        3. Биография
+    2. Категория статьи (дерево неограниченной вложенности)
+        1. Название
+        2. Описание
+    3. Статья
+        1. Название
+        2. Картинка
+        3. Анонс
+        4. Текст
+        5. Автор (может быть только один)
+        6. Категории (может быть несколько)
+
+2. Запросы:
+    1. Получить список статей с пагинацией (будет выдана 1-я страница по умолчанию, на странице 10 статей):
+        https://articles.ddev.site/articles/list
+    2. Получить конкретную страницу списка статей: https://articles.ddev.site/articles/list?page=2
+    3. При получении списка статей, его можно отфильтровать по title (названию)), author (имени автора), 
+       category (названию категории).
+    Например, найти статьи, у которых в названии встречается слово "китай", и которые входят в категорию "живопись".
+    https://articles.ddev.site/articles/list?filter[title]=китай&filter[category]=живопись
+    Пример ответа: 
+    [
+        {
+            "title": "Исследование вклада китайских художников, проживающих в России, в развитие китайского танца.",
+            "author": "Чжан Жуй",
+            "announcement": "Рассматриваются периоды межкультурного взаимодействия между Россией и Китайской Народной Республикой.",
+            "text": "Китайские художники внесли значительный вклад в развитие китайского танца через создание уникальных хореографий, разработку танцевальных тем и мотивов, а также популяризацию национальных форм танцевального искусства.",
+            "categories": "Живопись, Танец"
+        },
+        {
+            "title": "Формирование взгляда: влияние реализма XIX века на китайские художественные концепции.",
+            "author": "Су Вэйсай",
+            "announcement": "В статье проанализированы основные концепции европейского реализма XIX века и их влияние на формирование системы восприятия искусства в Китае.",
+            "text": "Процесс становления эстетических взглядов в Китае в XIX веке неразрывно связывался c усвоением зарубежных художественных достижений.",
+            "categories": "Живопись"
+        }
+    ]
+
+    Найти статьи, у которых в ФИО автора встречается словосочетание "Смирнов Олег" можно по адресу:
+    https://articles.ddev.site/articles/list?filter[author]=Смирнов+Олег
+
+    4. При указании категории при поиске статей учитывается иерархическая структура категорий. Например, при поиске по категории "наука" будут найдены статьи, категории которых входят на том или ином уровне в категорию наука (на примере данного проекта
+    это будут статьи с категориями "Кораблестроение", "Транспорт", "Энергетика", "Всеобщая история" и другие        ). 
+
+    Пример URL:
+    https://articles.ddev.site/articles/list?filter[category]=наука
+
+    Пример ответа:
+   [
+        {
+            "title": "Анализ текущего состояния цифровизации электрических сетей и подстанций",
+            "author": "Андреева Ольга Алексеевна",
+            "announcement": "В данной статье приведены основные преимущества внедрения цифровых технологий на подстанции, рассмотрено текущее положение цифровизации подстанций и сетей в России и мире, сделаны краткие выводы.",
+            "text": "Использование цифровых технологий приводит к значительным положительным эффектам во всех секторах экономики, поскольку ключевой характеристикой интеллектуальной сети является ее способность автоматически предотвращать (сокращать) перерывы в электроснабжения, что весьма важно для потребителя.",
+            "categories": "Кораблестроение"
+        },
+        {
+            "title": "Влияние культурных факторов на взаимодействие науки и общества: роль естественнонаучных музеев.",
+            "author": "Смирнов Олег Аркадьевич",
+            "announcement": "В статье отмечается, что музеи выполняют важную образовательную функцию, предоставляя возможности для обучения и популяризации науки.",
+            "text": "Музеи имеют большое значение для ученых и исследователей, предоставляя доступ к  своим коллекциям и архивам.",
+            "categories": "Наука, Культура и искусство"
+        },
+        {
+            "title": "Искусство великого наследия.",
+            "author": "Наимов СанджарТулкунович",
+            "announcement": "В статье рассмотрены геометрические построения отдельных деталей, которые испокон веков существовало, и применялась на практике.",
+            "text": "Миниатюра Востока, это уникальное явление в истории мирового искусства, привлекающее своим особым видением мира прекрасного, вобравшее художественный опыт многих поколений и народов Среднего и Ближнего Востока, Средней Азии.",
+            "categories": "Всеобщая история, Живопись"
+        },
+        ...
+    ]
+
+    5. Получить статью по id: https://articles.ddev.site/articles/8?expand=author,categories
+    Пример ответа:
+        {
+        "id": 8,
+        "title": "Формирование взгляда: влияние реализма XIX века на китайские художественные концепции.",
+        "announcement": "В статье проанализированы основные концепции европейского реализма XIX века и их влияние на формирование системы восприятия искусства в Китае.",
+        "text": "Процесс становления эстетических взглядов в Китае в XIX веке неразрывно связывался c усвоением зарубежных художественных достижений.",
+        "picture": "",
+        "author": {
+            "id": 8,
+            "full_name": "Су Вэйсай",
+            "birth_year": 1978,
+            "biography": ""
+        },
+        "categories": [
+            {
+                "id": 11,
+                "parent_id": 9,
+                "title": "Живопись",
+                "description": "Статьи о живописи"
+            }
+        ]
+    }
+
+    Поле picture имеет тип BLOB. Работа с ним не реализована пока в данном проекте. Как вариант можно было сделать строковый тип этого поля и записывать в него путь к файлу.
+
+    6. Получить список категорий с пагинацией (будет выдана 1-я страница по умолчанию, на странице 10 категорий):
+    https://articles.ddev.site/categories/list
+
+    7. Получить конкретную страницу списка категорий: https://articles.ddev.site/categories/list?page=2
+    8. При получении списка категорий, его можно отфильтровать по title (названию категории).
+    Поиск происходит по вхождению (но без учета иерархии, просто поиск категории на соответствие названию).
+    URL: https://articles.ddev.site/categories/list?filter[title]=культура
+    Пример ответа:
+    [
+        {
+            "title": "Культура и искусство",
+            "description": "Статьи о музыке, живописи, архитектуре, кино, театре и т.д.",
+            "parent": null
+        }
+    ]
+
+    9. Получить категорию по id: https://articles.ddev.site/categories/12?expand=parent
+    Пример ответа:
+    {
+        "id": 12,
+        "parent_id": 9,
+        "title": "Древние памятники",
+        "description": "Статьи о древних памятниках и их сохранении",
+        "parent": {
+            "id": 9,
+            "parent_id": null,
+            "title": "Культура и искусство",
+            "description": "Статьи о музыке, живописи, архитектуре, кино, театре и т.д."
+        }
+    }
+
+    10. Получить список авторов с пагинацией (будет выдана 1-я страница по умолчанию, на странице 10 авторов):
+    https://articles.ddev.site/authors/list
+
+    11. Получить конкретную страницу списка авторов: https://articles.ddev.site/authors/list?page=2
+
+    12. При получении списка авторов, его можно отфильтровать по full_name (ФИО), birth_year (год рождения), 
+        biography (биографии).
+    Например, найти авторов, у которых в full_name встречается "Андреева", и которые родились в 1964 году:
+    https://articles.ddev.site/authors/list?filter[full_name]=Андреева&filter[birth_year]=1964
+
+    Пример ответа:
+    [
+        {
+            "id": 4,
+            "full_name": "Андреева Ольга Алексеевна",
+            "birth_year": 1964,
+            "biography": "Магистрант, Самарский государственный технический университет, РФ, г. Самара."
+        }
+    ]
+
+    Найти авторов, у которых в биографии встречается слово "университет" (полнотекстовый поиск при этом здесь не реализован):
+    https://articles.ddev.site/authors/list?filter[biography]=университет
+
+    13. Получить автора по id: https://articles.ddev.site/authors/1
+
+    Пример ответа:
+    {
+        "id": 1,
+        "full_name": "Мухина Милена Львовна",
+        "birth_year": 1961,
+        "biography": "Канд. техн. наук, доцент, доцент, Нижегородский государственный технический университет им. Р.Е. Алексеева."
+    }

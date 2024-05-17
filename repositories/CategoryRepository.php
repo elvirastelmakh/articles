@@ -26,7 +26,7 @@ class CategoryRepository
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 10]);
         $pages->setPage($page-1);
         $pages->pageSizeParam = false;
-        $result = $query->orderBy('title')->offset($pages->offset)->limit($pages->limit)->createCommand()->queryAll();
+        $result = $query->orderBy('id')->offset($pages->offset)->limit($pages->limit)->createCommand()->queryAll();
             
         return $result;
     }
