@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use yii;
 use yii\rest\ActiveController;
 use app\repositories\ArticleRepository;
 
@@ -20,17 +21,26 @@ class ArticleController extends ActiveController
         $this->articleRepository = $articleRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function afterAction($action, $result)
+    {
+        $result = parent::afterAction($action, $result);
+        return $this->asJson($result);
+    }
+
+
     public function actionList()  {
-        $filter = (isset($_GET['filter']) && is_array($_GET['filter'])) ? $_GET['filter'] : [];
-        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-        $title = isset($filter['title']) ? $filter['title'] : null;
-        $author = isset($filter['author']) ? $filter['author'] : null;
-        $category = isset($filter['category']) ? $filter['category'] : null;
+        $filter = Yii::$app->request->get('filter');
+        $filter = (isset($filter)) && is_array($filter) ? $filter : [];
+        $page = (Yii::$app->request->get('page')) ? intval(Yii::$app->request->get('page')) : 1;
+        $title = isset($filter['title']) ? trim($filter['title']) : null;
+        $author = isset($filter['author']) ? trim($filter['author']) : null;
+        $category = isset($filter['category']) ? trim($filter['category']) : null;
 
         $result = $this->articleRepository->findByCriteria($page, $title, $author, $category);
-            
+
         return $result;
-    }
-    public function actionGet()  {
     }
 }

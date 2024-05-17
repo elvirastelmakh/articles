@@ -4,6 +4,8 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+use function PHPUnit\Framework\isNull;
+
 class Article extends ActiveRecord
 {
     /**
@@ -27,7 +29,8 @@ class Article extends ActiveRecord
         $fields = parent::fields();
         
         $fields['picture'] = function() {
-            return base64_encode($this->picture);
+            $picture = isset($this->picture) ? $this->picture : '';
+            return base64_encode($picture);
         };
         unset($fields['author_id']);
 
@@ -49,5 +52,4 @@ class Article extends ActiveRecord
     {
         return ['author', 'categories'];
     }        
-        
 }

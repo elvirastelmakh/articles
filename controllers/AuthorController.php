@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use yii;
 use yii\rest\ActiveController;
 use app\repositories\AuthorRepository;
 
@@ -20,12 +21,22 @@ class AuthorController extends ActiveController
         $this->authorRepository = $authorRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function afterAction($action, $result)
+    {
+        $result = parent::afterAction($action, $result);
+        return $this->asJson($result);
+    }
+
     public function actionList()  {
-        $filter = (isset($_GET['filter']) && is_array($_GET['filter'])) ? $_GET['filter'] : [];
-        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-        $full_name = isset($filter['full_name']) ? $filter['full_name'] : null;
+        $filter = Yii::$app->request->get('filter');
+        $filter = (isset($filter)) && is_array($filter) ? $filter : [];
+        $page = (Yii::$app->request->get('page')) ? intval(Yii::$app->request->get('page')) : 1;
+        $full_name = isset($filter['full_name']) ? trim($filter['full_name']) : null;
         $birth_year = isset($filter['birth_year']) ? intval($filter['birth_year']) : null;
-        $biography = isset($filter['biography']) ? $filter['biography'] : null;
+        $biography = isset($filter['biography']) ? trim($filter['biography']) : null;
 
         $result = $this->authorRepository->findByCriteria($page, $full_name, $birth_year, $biography);
             
