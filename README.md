@@ -2,7 +2,7 @@
 
 1. Склонировать репозиторий: git clone git@github.com:elvirastelmakh/articles.git
 2. Перейти в созданную директорию: `cd articles`
-3. Запустить проект: ddev start
+3. Запустить проект: ddev start (предварительно установить утилиту ddev, если она ранее на компьютер не устанавливалась)
 4. Зайти в web-контейнер: ddev ssh
 5. Установить composer: composer install
 6. Выполнить миграции: ./yii migrate
